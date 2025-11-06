@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  pgvector-db:
+    image: ankane/pgvector:latest
+    container_name: pgvector-db
+    restart: always
+    environment:
+      POSTGRES_USER: "your postgres username"
+      POSTGRES_PASSWORD: "your postgres password"
+      POSTGRES_DB: "postgress db name"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ragdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgvector_data:
